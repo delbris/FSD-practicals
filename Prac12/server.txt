@@ -1,0 +1,55 @@
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Serve static files from 'public' directory
+app.use(express.static('public'));
+
+// Route for the home page
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
+// Route to handle calculation
+app.post('/calculate', (req, res) => {
+  const { num1, num2, operation } = req.body;
+
+  // Validate inputs
+  const n1 = parseFloat(num1);
+  const n2 = parseFloat(num2);
+
+  if (isNaN(n1) || isNaN(n2)) {
+    return res.send('<h1>Error: Please enter valid numbers.</h1><a href="/">Go back</a>');
+  }
+
+  let result;
+  switch (operation) {
+    case 'add':
+      result = n1 + n2;
+      break;
+    case 'subtract':
+      result = n1 - n2;
+      break;
+    case 'multiply':
+      result = n1 * n2;
+      break;
+    case 'divide':
+      if (n2 === 0) {
+        return res.send('<h1>Error: Cannot divide by zero.</h1><a href="/">Go back</a>');
+      }
+      result = n1 / n2;
+      break;
+    default:
+      return res.send('<h1>Error: Invalid operation.</h1><a href="/">Go back</a>');
+  }
+
+  res.send(`<h1>Result: ${result}</h1><a href="/">Calculate again</a>`);
+});
+
+app.listen(port, () => {
+  console.log(`Calculator app listening at http://localhost:${port}`);
+});

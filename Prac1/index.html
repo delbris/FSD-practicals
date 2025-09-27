@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Voting System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Programming Language Poll</h1>
+
+        <div class="poll-container">
+            <div class="voting-section">
+                <h2>Cast Your Vote</h2>
+                <button onclick="vote('javascript')" class="vote-btn">JavaScript</button>
+                <button onclick="vote('python')" class="vote-btn">Python</button>
+                <button onclick="vote('java')" class="vote-btn">Java</button>
+                <button onclick="vote('cpp')" class="vote-btn">C++</button>
+            </div>
+
+            <div class="results-section">
+                <h2>Live Results</h2>
+                <div class="result-item">
+                    <span class="language">JavaScript:</span>
+                    <span id="javascript-votes">0</span> votes
+                    <div class="progress-bar">
+                        <div id="javascript-progress" class="progress"></div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="language">Python:</span>
+                    <span id="python-votes">0</span> votes
+                    <div class="progress-bar">
+                        <div id="python-progress" class="progress"></div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="language">Java:</span>
+                    <span id="java-votes">0</span> votes
+                    <div class="progress-bar">
+                        <div id="java-progress" class="progress"></div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="language">C++:</span>
+                    <span id="cpp-votes">0</span> votes
+                    <div class="progress-bar">
+                        <div id="cpp-progress" class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Object to store vote counts
+        const votes = {
+            javascript: 0,
+            python: 0,
+            java: 0,
+            cpp: 0
+        };
+
+        // Function to calculate the percentage for progress bars
+        function calculatePercentage() {
+            const total = Object.values(votes).reduce((a, b) => a + b, 0);
+            if (total === 0) return { javascript: 0, python: 0, java: 0, cpp: 0 };
+
+            return {
+                javascript: (votes.javascript / total) * 100,
+                python: (votes.python / total) * 100,
+                java: (votes.java / total) * 100,
+                cpp: (votes.cpp / total) * 100
+            };
+        }
+
+        // Function to update the UI with current vote counts and percentages
+        function updateVotes() {
+            const percentages = calculatePercentage();
+
+            // Update vote counts and progress bars for each language
+            Object.keys(votes).forEach(lang => {
+                // Update vote count
+                document.getElementById(`${lang}-votes`).textContent = votes[lang];
+
+                // Update progress bar
+                document.getElementById(`${lang}-progress`).style.width = `${percentages[lang]}%`;
+            });
+        }
+
+        // Function to handle voting
+        function vote(language) {
+            votes[language]++;
+            updateVotes();
+        }
+
+        // Simulate real-time votes from other users
+        function simulateVotes() {
+            const languages = ['javascript', 'python', 'java', 'cpp'];
+
+            setInterval(() => {
+                // Randomly select a language to receive a vote
+                const randomLang = languages[Math.floor(Math.random() * languages.length)];
+
+                // 50% chance to add a vote
+                if (Math.random() > 0.5) {
+                    votes[randomLang]++;
+                    updateVotes();
+                }
+            }, 2000); // Updates every 2 seconds
+        }
+
+        // Initialize the simulation when the page loads
+        window.onload = () => {
+            updateVotes(); // Initialize the display
+            simulateVotes(); // Start the simulation
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+.blue{
+    background-color: aliceblue;
+    color: rgb(0, 132, 132);
+}
+
+.red{
+    background-color: yellow;
+    color: red;
+}
+
+.Demo{
+    color: blue;
+    text-decoration:wavy;
+}
+
+input[type=text]{
+    padding: 10px;
+    border-radius: 25px;
+    background-color: black;
+    color: white;
+}

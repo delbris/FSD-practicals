@@ -1,0 +1,5 @@
+[2023-09-24 10:15:32] ERROR: Database connection failed
+[2023-09-24 10:15:35] INFO: Retrying database connection
+[2023-09-24 10:15:36] SUCCESS: Database connected successfully
+[2023-09-24 10:16:00] INFO: User login attempt
+[2023-09-24 10:16:01] ERROR: Invalid credentials for user 'admin'

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <div class="weather-input">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button id="getWeather">Get Weather</button>
+        </div>
+        <div class="weather-info" id="weatherInfo">
+            <!-- Weather information will be displayed here -->
+        </div>
+    </div>
+    <script>
+        // Hardcoded weather data for demonstration
+const weatherData = {
+    'delhi': { temperature: 18, condition: 'Cloudy' },
+    'vadodara': { temperature: 22, condition: 'Sunny' },
+    'chennai': { temperature: 25, condition: 'Partly Cloudy' },
+    'ahmedabad': { temperature: 20, condition: 'Clear' },
+    'rajasthan': { temperature: 27, condition: 'Sunny' },
+    'mumbai': { temperature: 32, condition: 'Hot' }
+};
+
+// Get DOM elements
+const cityInput = document.getElementById('cityInput');
+const getWeatherBtn = document.getElementById('getWeather');
+const weatherInfo = document.getElementById('weatherInfo');
+
+// Add click event listener to the button
+getWeatherBtn.addEventListener('click', () => {
+    // Get the city name and convert to lowercase for case-insensitive comparison
+    const city = cityInput.value.toLowerCase().trim();
+    
+    // Clear previous weather info classes
+    weatherInfo.className = 'weather-info';
+
+    if (city === '') {
+        displayError('Please enter a city name');
+        return;
+    }
+
+    // Check if we have weather data for the city
+    if (weatherData[city]) {
+        const weather = weatherData[city];
+        displayWeather(city, weather);
+    } else {
+        displayError('City not found in our database');
+    }
+});
+
+// Function to display weather information
+function displayWeather(city, weather) {
+    weatherInfo.className = 'weather-info success';
+    weatherInfo.innerHTML = `
+        <h2>${capitalize(city)}</h2>
+        <p>Temperature: ${weather.temperature}°C</p>
+        <p>Condition: ${weather.condition}</p>
+    `;
+}
+
+// Function to display error message
+function displayError(message) {
+    weatherInfo.className = 'weather-info error';
+    weatherInfo.innerHTML = `<p>${message}</p>`;
+}
+
+// Helper function to capitalize first letter of each word
+function capitalize(str) {
+    return str.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+    </script>
+</body>
+</html>
